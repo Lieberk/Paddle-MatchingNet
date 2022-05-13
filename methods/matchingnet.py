@@ -3,7 +3,7 @@ import paddle.nn as nn
 import numpy as np
 
 from methods.meta_template import MetaTemplate
-import utils
+import paddle.nn.functional as F
 
 
 class MatchingNet(MetaTemplate):
@@ -46,7 +46,7 @@ class MatchingNet(MetaTemplate):
         G, G_normalized = self.encode_training_set(z_support)
 
         y_s = paddle.to_tensor(np.repeat(range(self.n_way), self.n_support))
-        Y_S = utils.one_hot(y_s, self.n_way)
+        Y_S = F.one_hot(y_s, self.n_way)
         f = z_query
         logprobs = self.get_logprobs(f, G, G_normalized, Y_S)
         return logprobs
